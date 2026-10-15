@@ -1,7 +1,7 @@
-<div class="grid h-screen min-h-0 w-full grid-cols-(--custom-grid) text-(--claro-text-main)">
-  <aside class="guardian-sidebar m-4 flex min-h-0 min-w-0 flex-col overflow-hidden rounded-xl border border-(--claro-border) bg-(--claro-white)">
+<div class="grid h-screen min-h-0 w-full grid-cols-(--custom-grid) text-(--guardian-text-main)">
+  <aside class="guardian-sidebar m-4 flex min-h-0 min-w-0 flex-col overflow-hidden rounded-xl border border-(--guardian-border) bg-(--guardian-white)">
     <div class="guardian-brand flex items-center gap-3 px-3 py-4 text-white">
-      <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-white text-(--claro-red)">
+      <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-white text-(--guardian-red)">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 3.5 18 6v5.1c0 4.1-2.6 7.7-6 9.4-3.4-1.7-6-5.3-6-9.4V6l6-2.5Z" />
           <path d="m9.7 12 1.5 1.5 3.2-3.4" />
@@ -9,12 +9,12 @@
       </div>
       <div class="min-w-0 leading-tight">
         <p class="truncate text-sm font-bold">sh-PR-Guardian-AI</p>
-        <p class="mt-1 truncate text-[11px] text-white/85">Workspace Claro</p>
+        <p class="mt-1 truncate text-[11px] text-white/85">Workspace de revisión</p>
       </div>
     </div>
 
     <div class="min-h-0 flex-1 overflow-y-auto px-2 py-3">
-      <p class="px-2 pb-2 text-[10px] font-medium uppercase tracking-wide text-(--claro-text-muted)">Plataforma</p>
+      <p class="px-2 pb-2 text-[10px] font-medium uppercase tracking-wide text-(--guardian-text-muted)">Plataforma</p>
 
       <nav class="space-y-1" aria-label="Navegación principal">
         @for (item of menuItems; track item.path) {
@@ -27,7 +27,7 @@
               <ng-container [ngTemplateOutlet]="menuIcon" [ngTemplateOutletContext]="{ $implicit: item.icon }"></ng-container>
               <span class="min-w-0 flex-1">
                 <span class="block truncate text-[13px] font-semibold leading-4">{{ item.label }}</span>
-                <span class="mt-1 block truncate text-[10px] leading-3 text-(--claro-text-muted)">{{ item.description }}</span>
+                <span class="mt-1 block truncate text-[10px] leading-3 text-(--guardian-text-muted)">{{ item.description }}</span>
               </span>
               @if (item.icon !== 'dashboard') {
                 <svg class="h-3 w-3 shrink-0 text-[#7890ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -40,7 +40,7 @@
               <ng-container [ngTemplateOutlet]="menuIcon" [ngTemplateOutletContext]="{ $implicit: item.icon }"></ng-container>
               <span class="min-w-0 flex-1">
                 <span class="block truncate text-[13px] font-semibold leading-4">{{ item.label }}</span>
-                <span class="mt-1 block truncate text-[10px] leading-3 text-(--claro-text-muted)">{{ item.description }}</span>
+                <span class="mt-1 block truncate text-[10px] leading-3 text-(--guardian-text-muted)">{{ item.description }}</span>
               </span>
               <svg class="h-3 w-3 shrink-0 text-[#7890ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
@@ -51,17 +51,17 @@
       </nav>
     </div>
 
-    <footer class="border-t border-(--claro-border) px-3 py-3 text-[10px] text-(--claro-text-muted)">
+    <footer class="border-t border-(--guardian-border) px-3 py-3 text-[10px] text-(--guardian-text-muted)">
       <span class="mr-2 inline-block h-2 w-2 rounded-full border border-emerald-600 bg-emerald-100"></span>
       Motor de reglas · IA · Integraciones
     </footer>
   </aside>
 
   <div class="grid min-h-0 min-w-0 grid-rows-(--custom-grid-main)">
-    <header class="flex min-w-0 items-center border-b border-(--claro-border) bg-(--claro-white)">
+    <header class="flex min-w-0 items-center border-b border-(--guardian-border) bg-(--guardian-white)">
       <div class="flex min-w-0 flex-1 items-center gap-3 px-4 md:px-6">
       <button type="button" aria-label="Abrir menú"
-        class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-(--claro-border) bg-(--claro-white) text-(--claro-text-main) md:hidden">
+        class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-(--guardian-border) bg-(--guardian-white) text-(--guardian-text-main) md:hidden">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -69,29 +69,36 @@
         </svg>
       </button>
 
-      <div class="h-5 w-px shrink-0 bg-(--claro-border)"></div>
+      <div class="h-5 w-px shrink-0 bg-(--guardian-border)"></div>
 
       <div class="min-w-0 flex-1">
-        <c-breadcrumbs class="hidden md:block min-w-0" [items]="breadcrumbItemsJson()"
-          (cBreadcrumbClick)="onBreadcrumbClick($event)"></c-breadcrumbs>
+        <nav class="hidden min-w-0 items-center gap-2 text-xs md:flex" aria-label="Ruta actual">
+          @for (item of breadcrumbItems(); track item.label; let last = $last) {
+            @if (item.href) {
+              <a [routerLink]="item.href" class="truncate text-(--guardian-text-muted) hover:text-(--guardian-red)">{{ item.label }}</a>
+            } @else {
+              <span class="truncate font-medium text-(--guardian-text-main)">{{ item.label }}</span>
+            }
+            @if (!last) { <span class="text-(--guardian-text-muted)">/</span> }
+          }
+        </nav>
         @if (mobileBreadcrumbBack(); as back) {
-        <c-breadcrumbs class="md:hidden" [mobile]="true" [backLabel]="back.label" [backHref]="back.href"
-          [items]="breadcrumbItemsJson()" (cBreadcrumbClick)="onBreadcrumbClick($event)"></c-breadcrumbs>
+        <a [routerLink]="back.href" class="text-xs font-medium text-(--guardian-red) md:hidden">{{ back.label }}</a>
         } @else {
-        <p class="text-xs text-(--claro-text-muted) md:hidden">Inicio</p>
+        <p class="text-xs text-(--guardian-text-muted) md:hidden">Inicio</p>
         }
       </div>
       </div>
     </header>
 
-    <main class="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto bg-(--claro-gray-bg) p-8">
+    <main class="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto bg-(--guardian-gray-bg) p-8">
       @if (isRemoteLoading()) {
-      <div class="absolute inset-0 z-10 flex items-center justify-center bg-(--claro-gray-bg)">
+      <div class="absolute inset-0 z-10 flex items-center justify-center bg-(--guardian-gray-bg)">
         <div
-          class="flex items-center gap-3 rounded-full border border-(--claro-border) bg-(--claro-white) px-4 py-3 shadow-sm">
+          class="flex items-center gap-3 rounded-full border border-(--guardian-border) bg-(--guardian-white) px-4 py-3 shadow-sm">
           <span
-            class="h-5 w-5 animate-spin rounded-full border-2 border-(--claro-border) border-t-(--claro-red)"></span>
-          <span class="text-sm font-medium text-(--claro-text-main)">Cargando...</span>
+            class="h-5 w-5 animate-spin rounded-full border-2 border-(--guardian-border) border-t-(--guardian-red)"></span>
+          <span class="text-sm font-medium text-(--guardian-text-main)">Cargando...</span>
         </div>
       </div>
       }

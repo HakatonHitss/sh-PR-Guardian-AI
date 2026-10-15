@@ -3,8 +3,7 @@ const { withNativeFederation, shareAll } = require('@angular-architects/native-f
 module.exports = withNativeFederation({
     name: 'sh-pr-guardian-ai',
     shared: {
-        ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-        '@claro/message-bus': { singleton: true, strictVersion: false }
+        ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' })
     },
     skip: [
         'rxjs/ajax',

@@ -17,7 +17,7 @@
  *      microfrontends registrados en federation.manifest.json.
  *
  *   3. connect-src / form-action
- *      Origen de Keycloak recibido mediante un argumento opcional o resuelto
+ *      Origen adicional de conexiones recibido mediante un argumento opcional o resuelto
  *      desde el valor predeterminado del arquetipo.
  *
  * FUNCIONAMIENTO DEL NONCE
@@ -45,7 +45,7 @@
  *     --index dist/sh-pr-guardian-ai/browser/index.html \
  *     --manifest dist/sh-pr-guardian-ai/browser/federation.manifest.json \
  *     --out /app/csp-headers.conf \
- *     [--auth-origin https://keycloak.ejemplo.com] \
+ *     [--connect-origin https://api.ejemplo.com] \
  *     [--mode enforce|report-only] \
  *     [--allow-localhost]
  *
@@ -73,20 +73,7 @@ import { dirname } from 'node:path';
 // Constantes
 // ---------------------------------------------------------------------------
 
-const DEFAULT_AUTH_ORIGIN = 'https://keycloak.apps.ocdv.claro.pe';
 const NONCE_PLACEHOLDER = '__CSP_NONCE__';
-
-// @claro/ui genera durante la ejecucion una hoja de estilos global para sus
-// Web Components.
-//
-// El contenido es estable para la version instalada y se autoriza mediante un
-// hash especifico, sin utilizar 'unsafe-inline'.
-//
-// Si se actualiza @claro/ui, este hash debe validarse nuevamente desplegando
-// primero la CSP en modo report-only.
-const APPROVED_RUNTIME_STYLE_HASHES = [
-  "'sha256-MMoXaAKMGvnPp2rZunQD+r4ZH9NTrBbLVIbnmZ4a60Y='"
-];
 
 // ---------------------------------------------------------------------------
 // Utilidades
@@ -214,8 +201,12 @@ function resolveRemoteOrigins(manifest, allowLocalhost) {
   return uniqueRemoteOrigins;
 }
 
-function resolveAuthOrigin(authOriginValue) {
-  const value = authOriginValue || DEFAULT_AUTH_ORIGIN;
+function resolveConnectOrigin(connectOriginValue) {
+  if (!connectOriginValue) {
+    return null;
+  }
+
+  const value = connectOriginValue;
 
   let parsedUrl;
 
@@ -318,7 +309,7 @@ if (missingArgs.length > 0) {
   console.error(
     '[generate-csp] Uso: node scripts/generate-csp.mjs ' +
       '--index <file> --manifest <file> --out <file> ' +
-      '[--auth-origin <url>] [--mode enforce|report-only] ' +
+      '[--connect-origin <url>] [--mode enforce|report-only] ' +
       '[--allow-localhost]'
   );
   process.exit(1);
@@ -383,13 +374,10 @@ if (remoteOrigins.length === 0) {
   );
 }
 
-const authOrigin = resolveAuthOrigin(args['auth-origin']);
+const connectOrigin = resolveConnectOrigin(args['connect-origin']);
 
-if (!args['auth-origin']) {
-  console.warn(
-    `[generate-csp] No se proporciono --auth-origin. ` +
-      `Se utilizara el valor predeterminado: ${authOrigin}`
-  );
+if (connectOrigin) {
+  console.log(`[generate-csp] Origen adicional para connect-src: ${connectOrigin}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -406,13 +394,12 @@ const scriptSources = [
 const styleSources = [
   "'self'",
   criticalStyleHash,
-  ...APPROVED_RUNTIME_STYLE_HASHES,
   ...remoteOrigins
 ];
 
 const connectSources = [
   "'self'",
-  authOrigin,
+  ...(connectOrigin ? [connectOrigin] : []),
   ...remoteOrigins
 ];
 
@@ -439,7 +426,7 @@ const directives = [
 
   "frame-ancestors 'self'",
 
-  `form-action 'self' ${authOrigin}`,
+  "form-action 'self'",
 
   "worker-src 'self' blob:"
 ];
@@ -468,13 +455,10 @@ const output = [
   `# Modo: ${args.mode}`,
   '# Nonce: generado por NGINX mediante $request_id para cada respuesta.',
   `# Bloque critico index.html: ${criticalStyleHash}`,
-  `# Estilos runtime autorizados: ${
-    APPROVED_RUNTIME_STYLE_HASHES.join(', ') || '(ninguno)'
-  }`,
   `# Remotos permitidos: ${
     remoteOrigins.join(', ') || '(ninguno)'
   }`,
-  `# Origen de autenticacion: ${authOrigin}`,
+  `# Origen adicional de conexion: ${connectOrigin || '(ninguno)'}`,
   '',
   `add_header ${headerName} "${csp}" always;`,
   ''
@@ -500,7 +484,6 @@ console.log(`[generate-csp] Bloque critico ........... ${criticalStyleHash}`);
 console.log(`[generate-csp] script-src ............... ${scriptSources.join(' ')}`);
 console.log(`[generate-csp] style-src ................ ${styleSources.join(' ')}`);
 console.log(`[generate-csp] connect-src .............. ${connectSources.join(' ')}`);
-console.log(`[generate-csp] Estilos runtime .......... ${APPROVED_RUNTIME_STYLE_HASHES.join(' ') || '(ninguno)'}`);
 console.log(`[generate-csp] Remotos .................. ${remoteOrigins.join(' ') || '(ninguno)'}`);
 
 if (args.mode === 'report-only') {

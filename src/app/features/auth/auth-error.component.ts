@@ -8,13 +8,13 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <section class="flex min-h-screen items-center justify-center bg-[var(--claro-gray-bg)] p-6">
+    <section class="flex min-h-screen items-center justify-center bg-[var(--guardian-gray-bg)] p-6">
       <article
-        class="w-full max-w-md rounded-2xl border border-[var(--claro-border)] bg-[var(--claro-white)] p-6 shadow-sm"
+        class="w-full max-w-md rounded-2xl border border-[var(--guardian-border)] bg-[var(--guardian-white)] p-6 shadow-sm"
       >
         <div class="mb-5 flex items-center gap-3">
           <div
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--claro-red)]/10 text-[var(--claro-red)]"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--guardian-red)]/10 text-[var(--guardian-red)]"
             aria-hidden="true"
           >
             <svg
@@ -32,10 +32,10 @@ import { AuthService } from '../../core/services/auth.service';
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
           </div>
-          <h1 class="text-lg font-semibold text-[var(--claro-text-main)]">Error de autenticación</h1>
+          <h1 class="text-lg font-semibold text-[var(--guardian-text-main)]">Error de autenticación</h1>
         </div>
 
-        <p class="text-sm leading-6 text-[var(--claro-text-muted)]">
+        <p class="text-sm leading-6 text-[var(--guardian-text-muted)]">
           No se pudo completar la autenticación de Keycloak. Puedes reintentar o volver al inicio.
         </p>
 
@@ -43,14 +43,14 @@ import { AuthService } from '../../core/services/auth.service';
           <button
             type="button"
             (click)="retryLogin()"
-            class="rounded-lg border-none bg-[var(--claro-red)] px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--claro-red-dark)]"
+            class="rounded-lg border-none bg-[var(--guardian-red)] px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--guardian-red-dark)]"
           >
             Reintentar inicio de sesión
           </button>
 
           <a
             routerLink="/"
-            class="text-sm font-semibold text-[var(--claro-red)] underline-offset-2 transition-colors hover:text-[var(--claro-red-dark)] hover:underline"
+            class="text-sm font-semibold text-[var(--guardian-red)] underline-offset-2 transition-colors hover:text-[var(--guardian-red-dark)] hover:underline"
           >
             Ir al inicio
           </a>

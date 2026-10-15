@@ -48,6 +48,10 @@ function parseArgs(argv) {
 
 const args = parseArgs(process.argv.slice(2));
 
+if (args.remotes.length === 0 && process.env.REMOTE_TEMPLATE_URL) {
+  args.remotes.push(`template=${process.env.REMOTE_TEMPLATE_URL}`);
+}
+
 if (!args.manifest) {
   console.error('[write-federation-manifest] Falta --manifest <ruta del federation.manifest.json en dist/>');
   process.exit(1);

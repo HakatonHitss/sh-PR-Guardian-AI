@@ -1,7 +1,7 @@
 # =============================================================================
 # Stage 1: Build de Angular y generación de CSP
 # =============================================================================
-FROM 172.19.90.65:6000/eag/nodejs:20-debian-1 AS builder
+FROM node:20-bookworm-slim AS builder
 
 USER root
 
@@ -10,13 +10,8 @@ ARG REMOTE_TEMPLATE_URL
 
 WORKDIR /app
 
-# Copiar archivos de dependencias y configuración del registro corporativo.
+# Copiar archivos de dependencias.
 COPY package*.json ./
-COPY .npmrc /root/.npmrc
-
-# Evitar el proxy corporativo para Nexus y servicios locales.
-ENV no_proxy=172.19.90.65,localhost,127.0.0.1
-ENV NO_PROXY=172.19.90.65,localhost,127.0.0.1
 
 # Instalar dependencias.
 RUN npm install --no-audit
@@ -62,7 +57,7 @@ RUN echo "Building for environment: ${ENV}" && \
 # =============================================================================
 # Stage 2: Ejecución con NGINX
 # =============================================================================
-FROM 172.19.90.65:6000/ubi9/nginx-120
+FROM nginxinc/nginx-unprivileged:1.27-alpine
 
 USER root
 

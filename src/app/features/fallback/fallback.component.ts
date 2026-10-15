@@ -1,18 +1,17 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { getFallbackState } from './fallback-state';
 
 @Component({
   selector: 'app-sh-pr-guardian-ai-fallback',
   imports: [RouterLink],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section
       class="mx-auto flex w-full max-w-2xl flex-col items-center justify-center gap-3 px-6 py-20 text-center"
     >
       <svg
-        class="h-12 w-12 text-(--claro-red)"
+        class="h-12 w-12 text-(--guardian-red)"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -25,20 +24,20 @@ import { getFallbackState } from './fallback-state';
         <line x1="12" y1="16" x2="12.01" y2="16"></line>
       </svg>
 
-      <h2 class="text-lg font-semibold text-(--claro-text-main)">Módulo no disponible</h2>
+      <h2 class="text-lg font-semibold text-(--guardian-text-main)">Módulo no disponible</h2>
 
-      <p class="text-sm text-(--claro-text-muted)">
+      <p class="text-sm text-(--guardian-text-muted)">
         No se pudo cargar <strong>{{ remoteName }}</strong> tras {{ retries }} intentos.
       </p>
 
-      <p class="text-xs text-(--c-gray-500)">{{ reason }}</p>
+      <p class="text-xs text-(--guardian-text-muted)">{{ reason }}</p>
 
       <div class="mt-2 flex flex-wrap items-center justify-center gap-3">
-        <c-button variant="primary" label="Reintentar" (click)="retry()"></c-button>
+        <button type="button" (click)="retry()" class="rounded-md bg-(--guardian-red) px-4 py-2 text-sm font-semibold text-white hover:bg-(--guardian-red-dark)">Reintentar</button>
 
         <a
           routerLink="/template"
-          class="text-sm font-semibold text-(--claro-red) underline-offset-2 transition-colors hover:text-(--claro-red-dark) hover:underline"
+          class="text-sm font-semibold text-(--guardian-red) underline-offset-2 transition-colors hover:text-(--guardian-red-dark) hover:underline"
         >
           Ir a consultas
         </a>

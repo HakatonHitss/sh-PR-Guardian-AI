@@ -1,12 +1,5 @@
 import { NgClass, NgTemplateOutlet } from '@angular/common';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   NavigationCancel,
@@ -61,7 +54,6 @@ function isRemoteTemplateDestination(navUrl: string): boolean {
   return ['/default', '/template', '/hallazgos', '/cobertura', '/asistente', '/historial', '/proyectos', '/reportes', '/configuracion'].some(path => pathOnly === path || pathOnly.startsWith(path + '/'));
 }
 
-/** Matches `c-breadcrumbs` JSON item shape (Stencil `BreadcrumbItem`). */
 type ShellBreadcrumbItem = {
   readonly label: string;
   readonly href?: string;
@@ -110,7 +102,6 @@ function buildBreadcrumbItems(pathname: string): readonly ShellBreadcrumbItem[] 
   selector: 'app-dashboard',
   standalone: true,
   imports: [NgClass, NgTemplateOutlet, RouterLink, RouterOutlet],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'block w-full'
@@ -152,9 +143,7 @@ export class DashboardComponent {
     { initialValue: this.router.url.split(/[?#]/)[0] || '/' }
   );
 
-  readonly breadcrumbItemsJson = computed(() =>
-    JSON.stringify(buildBreadcrumbItems(this.currentPath()))
-  );
+  readonly breadcrumbItems = computed(() => buildBreadcrumbItems(this.currentPath()));
 
   readonly mobileBreadcrumbBack = computed((): { readonly label: string; readonly href: string } | null => {
     const items = [...buildBreadcrumbItems(this.currentPath())];
@@ -169,13 +158,6 @@ export class DashboardComponent {
     return { label: parent.label, href };
   });
 
-  onBreadcrumbClick(event: Event): void {
-    const item = (event as CustomEvent<{ href?: string }>).detail;
-    if (typeof item?.href === 'string' && item.href.length > 0) {
-      void this.router.navigateByUrl(item.href);
-    }
-  }
-
   readonly shellInfo: readonly DashboardInfoItem[] = [
     {
       label: 'Aplicación',
@@ -187,7 +169,7 @@ export class DashboardComponent {
     },
     {
       label: 'Autenticación',
-      value: 'Keycloak'
+      value: 'Sesión de demostración'
     }
   ];
 
@@ -285,7 +267,7 @@ export class DashboardComponent {
 
   get userEmail(): string {
     const user = this.authService.getUser();
-    return this.getStringValue(user, ['email']) ?? 'admin@claro.com';
+    return this.getStringValue(user, ['email']) ?? 'admin@example.com';
   }
 
   private getStringValue(user: Record<string, unknown>, keys: readonly string[]): string | null {
