@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{nombreAplicacion}}
+  namespace: {{nombreEspacio}}
+  labels:
+    app: {{nombreAplicacion}}
+    app.kubernetes.io/name: {{nombreAplicacion}}
+    app.kubernetes.io/instance: {{nombreAplicacion}}
+    app.kubernetes.io/part-of: {{parteDe}}
+    app.kubernetes.io/component: microfrontend
+    app.kubernetes.io/managed-by: argocd
+    claro.pe/environment: "{{ambiente}}"
+    claro.pe/owner: {{propietario}}
+    claro.pe/tier: {{nivel}}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  progressDeadlineSeconds: 600
+  selector:
+    matchLabels:
+      app: {{nombreAplicacion}}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: {{nombreAplicacion}}
+        app.kubernetes.io/name: {{nombreAplicacion}}
+        app.kubernetes.io/instance: {{nombreAplicacion}}
+        app.kubernetes.io/part-of: {{parteDe}}
+        app.kubernetes.io/component: microfrontend
+        claro.pe/environment: "{{ambiente}}"
+        claro.pe/owner: {{propietario}}
+        claro.pe/tier: {{nivel}}
+      annotations:
+        claro.pe/source-repository: "{{repositorio}}"
+        claro.pe/version: "1"
+    spec:
+      serviceAccountName: {{nombreAplicacion}}
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: {{nombreAplicacion}}
+          image: {{nombreImagen}}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "{{resolved_resources.request_cpu}}"
+              memory: "{{resolved_resources.request_mem}}"
+            limits:
+              cpu: "{{resolved_resources.limit_cpu}}"
+              memory: "{{resolved_resources.limit_mem}}"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault

@@ -1,0 +1,25 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{nombreAplicacion}}
+  namespace: {{nombreEspacio}}
+  labels:
+    app.kubernetes.io/name: {{nombreAplicacion}}
+    app.kubernetes.io/instance: {{nombreAplicacion}}
+    app.kubernetes.io/part-of: {{parteDe}}
+    app.kubernetes.io/component: microfrontend
+    app.kubernetes.io/managed-by: argocd
+    claro.pe/owner: {{propietario}}
+  annotations:
+    # MFE de solo assets estáticos: no requiere session affinity, se deshabilita
+    # la cookie de sticky-session del router (evita el hallazgo "Cookie sin SameSite").
+    haproxy.router.openshift.io/disable_cookies: "true"
+spec:
+  to:
+    kind: Service
+    name: {{nombreAplicacion}}
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

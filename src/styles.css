@@ -1,0 +1,129 @@
+@import '@claro/ui/variables.css';
+@import 'tailwindcss';
+
+
+:root {
+    /* Map the app's semantic tokens to the Claro UI design tokens. */
+    --claro-font-family: var(--c-font-family);
+    --claro-white: var(--c-white);
+    --claro-red: var(--c-red-600);
+    --claro-red-dark: var(--c-red-800);
+    --claro-gray-bg: var(--c-gray-100);
+    --claro-border: var(--c-gray-200);
+    --claro-text-main: var(--c-gray-900);
+    --claro-text-muted: var(--c-gray-500);
+    --claro-sidebar-width: 240px;
+    --claro-header-height: 60px;
+    --custom-grid: var(--claro-sidebar-width) 1fr;
+    --custom-grid-main: var(--claro-header-height) 1fr;
+}
+
+@layer components {
+    .guardian-sidebar {
+        box-shadow: 0 3px 12px rgb(23 40 65 / 8%);
+    }
+
+    .guardian-brand {
+        background: #bf251b;
+    }
+
+    .guardian-menu-item {
+        display: flex;
+        min-height: 47px;
+        align-items: center;
+        gap: 10px;
+        border-radius: 5px;
+        padding: 8px 10px;
+        color: var(--claro-text-main);
+        transition: background-color 150ms ease, color 150ms ease;
+    }
+
+    .guardian-menu-item:not([aria-disabled='true']):hover {
+        background: #fdf0ef;
+    }
+
+    .guardian-menu-item-active {
+        background: #fbe1df;
+        color: #bd251d;
+    }
+
+    .guardian-menu-item-active svg {
+        color: #c42b22;
+    }
+}
+
+@layer base {
+
+
+    html,
+    body {
+        min-height: 100%;
+    }
+
+    body {
+        font-family:
+            var(--claro-font-family),
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            sans-serif;
+        margin: 0;
+        color: var(--claro-text-main);
+        background-color: var(--claro-white);
+    }
+
+    app-sh-pr-guardian-ai-root {
+        display: flex;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    #sh-pr-guardian-ai-loading-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background-color: #F52717;
+    }
+
+    #sh-pr-guardian-ai-loading-screen svg {
+        display: block;
+        width: min(220px, 100%);
+        height: auto;
+    }
+
+    .loading-logo-accent {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: loading-logo-pulse 1.4s ease-in-out infinite;
+    }
+
+    .loading-logo-accent-1 {
+        animation-delay: 0s;
+    }
+
+    .loading-logo-accent-2 {
+        animation-delay: 0.16s;
+    }
+
+    .loading-logo-accent-3 {
+        animation-delay: 0.32s;
+    }
+}
+
+@keyframes loading-logo-pulse {
+
+    0%,
+    100% {
+        opacity: 0.35;
+        transform: scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

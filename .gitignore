@@ -1,0 +1,70 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Angular
+.angular/
+
+# Dependencies
+/node_modules
+
+# Coverage & Testing
+/coverage
+.vitest/
+
+# Sonar
+.scannerwork/
+.sonar/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+.history/*
+
+# Miscellaneous
+.sass-cache/
+/connect.lock
+/libpeerconnection.log
+testem.log
+/typings
+package-lock.json
+.agents/
+skills-lock.json
+
+# Environment files
+.env*
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# Windows ADS
+*.Zone.Identifier
+*:*Zone.Identifier
+
+# CSP generada durante el build
+/csp-headers.conf

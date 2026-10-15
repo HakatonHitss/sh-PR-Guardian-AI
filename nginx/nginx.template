@@ -1,0 +1,72 @@
+server {
+    listen 8080;
+    server_name localhost;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # CSP generada durante el build por scripts/generate-csp.mjs.
+    include /etc/nginx/csp-headers.conf;
+
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Cache-Control "no-store" always;
+
+    # ---------------------------------------------------------------------
+    # Sustitucion de marcadores CSP por respuesta
+    # ---------------------------------------------------------------------
+    #
+    # NGINX sustituye los marcadores incluidos en index.html por el request_id
+    # de cada respuesta.
+    #
+    # sub_filter_once off permite reemplazar todas las apariciones de los
+    # marcadores dentro del documento HTML.
+    sub_filter_once off;
+
+    # Nonce utilizado por Angular y es-module-shims.
+    sub_filter '__CSP_NONCE__' '$request_id';
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # El manifiesto de Federation debe existir realmente.
+    # Si falta, debe responder 404 y no el index.html de la SPA.
+    location = /federation.manifest.json {
+        try_files $uri =404;
+    }
+
+    # Receptor de reportes CSP.
+    # En modo report-only registra las violaciones sin bloquear la aplicacion.
+    location = /csp-report {
+        access_log off;
+        default_type application/json;
+        client_max_body_size 16k;
+        return 204;
+    }
+
+    location /health {
+        access_log off;
+        default_type text/plain;
+        return 200 "healthy\n";
+    }
+
+    error_page 404 /index.html;
+
+    # --- CONFIGURACIONES GLOBALES OPCIONALES ---
+
+    # client_max_body_size 10M;
+    # keepalive_timeout 65;
+
+    # gzip on;
+    # gzip_types
+    #     text/plain
+    #     text/css
+    #     application/json
+    #     application/javascript
+    #     text/xml
+    #     application/xml
+    #     application/xml+rss
+    #     text/javascript;
+}

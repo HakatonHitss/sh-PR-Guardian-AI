@@ -1,0 +1,16 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{nombreAplicacion}}
+  namespace: {{nombreEspacio}}
+  labels:
+    app.kubernetes.io/name: {{nombreAplicacion}}
+    app.kubernetes.io/instance: {{nombreAplicacion}}
+    app.kubernetes.io/part-of: {{parteDe}}
+    app.kubernetes.io/managed-by: argocd
+    claro.pe/owner: {{propietario}}
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: {{nombreAplicacion}}

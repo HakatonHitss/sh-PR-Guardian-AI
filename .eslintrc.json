@@ -1,0 +1,9 @@
+{
+    "root": true,
+    "extends": [
+        "plugin:@claro/eslint-angular/angular"
+    ],
+    "ignorePatterns": [
+        "projects/**/*"
+    ]
+}
