@@ -6,6 +6,7 @@ FROM 172.19.90.65:6000/eag/nodejs:20-debian-1 AS builder
 USER root
 
 ARG ENV=production
+ARG REMOTE_TEMPLATE_URL
 
 WORKDIR /app
 
@@ -35,8 +36,18 @@ COPY . .
 # - genera la política CSP definitiva en modo enforce.
 RUN echo "Building for environment: ${ENV}" && \
     npm run build -- --configuration="${ENV}" && \
-    node scripts/write-federation-manifest.mjs \
-        --manifest dist/sh-pr-guardian-ai/browser/federation.manifest.json && \
+    if [ -n "${REMOTE_TEMPLATE_URL}" ]; then \
+        node scripts/write-federation-manifest.mjs \
+            --manifest dist/sh-pr-guardian-ai/browser/federation.manifest.json \
+            --remote "template=${REMOTE_TEMPLATE_URL}"; \
+    else \
+        node scripts/write-federation-manifest.mjs \
+            --manifest dist/sh-pr-guardian-ai/browser/federation.manifest.json; \
+    fi && \
+    if [ "${ENV}" = "production" ] && grep -q 'localhost' dist/sh-pr-guardian-ai/browser/federation.manifest.json; then \
+        echo "REMOTE_TEMPLATE_URL es obligatorio para una imagen de produccion que incluya remotos."; \
+        exit 1; \
+    fi && \
     node scripts/generate-csp.mjs \
         --index dist/sh-pr-guardian-ai/browser/index.html \
         --manifest dist/sh-pr-guardian-ai/browser/federation.manifest.json \

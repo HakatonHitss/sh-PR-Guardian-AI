@@ -175,6 +175,21 @@ La configuración de producción se encuentra en:
 src/environments/environment.ts
 ```
 
+La imagen Docker recibe la URL pública del microfrontend como argumento de build.
+El valor se escribe en `federation.manifest.json` antes de generar la CSP, por lo
+que ambos artefactos quedan alineados:
+
+```bash
+docker build \
+  --build-arg ENV=production \
+  --build-arg REMOTE_TEMPLATE_URL=https://mfe.example.com/remoteEntry.json \
+  -t sh-pr-guardian-ai .
+```
+
+No omitas `REMOTE_TEMPLATE_URL` en despliegues que cargan el remoto: el valor
+incluido en el repositorio (`http://localhost:4211`) solo es apropiado para
+desarrollo local.
+
 El pipeline genera actualmente el build con:
 
 ```bash
