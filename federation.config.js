@@ -2,6 +2,9 @@ const { withNativeFederation, shareAll } = require('@angular-architects/native-f
 
 module.exports = withNativeFederation({
     name: 'sh-pr-guardian-ai',
+    exposes: {
+        './Routes': './src/app/app.routes.ts'
+    },
     shared: {
         ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' })
     },
